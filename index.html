@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<title>CGI and cookies</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <form id="testForm" action="/cgi-bin/form.py" method="POST" target="_self">
+
+        <h1>Проверка знания каскадных таблиц стилей CSS</h1>
+
+        <div class="tab"> 1) Как расшифровывается CSS?
+            <p><input type = "radio" name = "css_abbr" value="1"/> Counter-Strike: Source</p>
+            <p><input type = "radio" name = "css_abbr" value="2"/> Cascading Style Sheets</p>
+            <p><input type = "radio" name = "css_abbr" value="3"/> Control System Software</p>
+            <p><input type = "radio" name = "css_abbr" value="4"/> Commands of Sorted Sets</p>
+        </div>
+
+        <div class="tab"> 2) При задании свойств margin в процентах, относительно чего считаются эти проценты?
+            <p><input type = "radio" name = "margin" value="1" /> Ширины самого элемента</p>
+            <p><input type = "radio" name = "margin" value="2"/> Ширины родительского элемента</p>
+            <p><input type = "radio" name = "margin" value="3"/> Padding родительского элемента</p>
+            <p><input type = "radio" name = "margin" value="4"/> Margin родительского элемента</p>
+        </div>
+
+        <div class="tab"> 3) Какой из вариантов свойства padding записаны корректно?
+            <p><input type = "checkbox" name = "padding" value="1"/> padding-top: -20px</p>
+            <p><input type = "checkbox" name = "padding" value="2"/> padding-left: 10%</p>
+            <p><input type = "checkbox" name = "padding" value="3"/> padding: 10px</p>
+            <p><input type = "checkbox" name = "padding" value="4"/> padding: 10px 20px 5px</p>
+        </div>
+
+        <div class="tab"> 4) Единица измерения vmax обозначает
+            <p><input type = "radio" name = "vmax" value="1"/> 100% высоты видимой части экрана</p>
+            <p><input type = "radio" name = "vmax" value="2"/> 100% ширины видимой части экрана</p>
+            <p><input type = "radio" name = "vmax" value="3"/> Большую сторону видимой части экрана</p>
+            <p><input type = "radio" name = "vmax" value="4"/> Такой величины нет</p>
+        </div>
+
+        <div style="overflow: auto;">
+            <div style="float: right;">
+              <button type="button" id="prevBtn" onclick="nextPrev(-1)">Назад</button>
+              <button type="button" id="nextBtn" onclick="nextPrev(1)">Далее</button>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+    </form>
+
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            let x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Отправить";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Далее";
+            }
+            fixStepIndicator(n);
+        }
+
+        function nextPrev(n) {
+            // функция определяет какой вопрос теста отображать
+            let x = document.getElementsByClassName("tab");
+            x[currentTab].style.display = "none";
+            currentTab += n;
+            // если последний вопрос
+            if (currentTab >= x.length) {
+                document.getElementById("testForm").submit();
+                return false;
+            }
+            showTab(currentTab);
+        }
+
+        function fixStepIndicator(n) {
+            let x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            x[n].className += " active";
+        }
+
+    </script>
+</body>
+</html>
